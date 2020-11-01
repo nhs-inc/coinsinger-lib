@@ -1,2 +1,1 @@
 include ':app', ':youtubedl'
-rootProject.name='coinsinger-lib'
