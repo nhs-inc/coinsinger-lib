@@ -10,7 +10,7 @@ public interface Constants {
     String pythonLibName = "libpython.zip.so";
     String pythonDirName = "python";
     String ffmpegDirName = "ffmpeg";
-    String youtubeDLDirName = "youtube-dl";
+    String youtubeDLDirName = "youtube_dl";
     String youtubeDLBin = "__main__.py";
     String youtubeDLFile = "youtube_dl.zip";
     String pythonLibVersion = "pythonLibVersion";
