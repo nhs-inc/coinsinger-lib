@@ -7,7 +7,7 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:4.1.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -21,11 +21,7 @@ def VERSION_PATCH = 5
 def VERSION_BUILD = 0
 
 ext {
-    VERSION_CODE = (VERSION_MAJOR * 100000)
-        + (VERSION_MINOR * 1000)
-        + (VERSION_PATCH * 100)
-        + (VERSION_BUILD)
-
+    VERSION_CODE = (VERSION_MAJOR * 100000) + (VERSION_MINOR * 1000) + (VERSION_PATCH * 100) + (VERSION_BUILD)
     VERSION_NAME = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
 
     IO_VERSION = '2.5'
