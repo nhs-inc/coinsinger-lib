@@ -95,7 +95,7 @@ class YoutubeDLUpdater {
     @NonNull
     private static File getYoutubeDLDir(Context appContext) {
         File baseDir = new File(appContext.getNoBackupFilesDir(), Constants.baseName);
-        return new File(baseDir, Constants.youtubeDLName);
+        return new File(baseDir, Constants.youtubeDLDirName);
     }
 
     @Nullable

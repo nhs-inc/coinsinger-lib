@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhs.youtubedl.Constants;
 import com.nhs.youtubedl.callback.DownloadProgressCallback;
 import com.nhs.youtubedl.dto.VideoInfo;
 import com.nhs.youtubedl.enums.UpdateStatus;
@@ -61,7 +60,7 @@ public class YoutubeDL {
         binDir = new File(packagesDir, "usr/bin");
         pythonPath = new File(packagesDir, Constants.pythonBin);
 
-        File youtubeDLDir = new File(baseDir, Constants.youtubeDLName);
+        File youtubeDLDir = new File(baseDir, Constants.youtubeDLDirName);
         youtubeDLPath = new File(youtubeDLDir, Constants.youtubeDLBin);
 
         ENV_LD_LIBRARY_PATH = packagesDir.getAbsolutePath() + "/usr/lib";
@@ -77,7 +76,7 @@ public class YoutubeDL {
         if (!youtubeDLDir.exists()) {
             youtubeDLDir.mkdirs();
             try {
-                ZipUtils.unzip(appContext.getResources().openRawResource(R.raw.youtube_dl), youtubeDLDir);
+                ZipUtils.tempUnzip(appContext.getResources().openRawResource(R.raw.youtube_dl), youtubeDLDir);
             } catch (Exception e) {
                 FileUtils.deleteQuietly(youtubeDLDir);
                 throw new YoutubeDLException("failed to initialize", e);
@@ -93,21 +92,12 @@ public class YoutubeDL {
 
             try {
                 ZipUtils.unzip(appContext.getResources().openRawResource(R.raw.python3_7_arm), packagesDir);
-                updatePython(appContext, pythonPath.getName());
             } catch (Exception e) {
                 FileUtils.deleteQuietly(pythonPath);
                 throw new YoutubeDLException("failed to initialize", e);
             }
             pythonPath.setExecutable(true);
         }
-    }
-
-    private boolean shouldUpdatePython(@NonNull Context appContext, @NonNull String version) {
-        return !version.equals(SharedPrefsHelper.get(appContext, Constants.pythonLibVersion));
-    }
-
-    private void updatePython(@NonNull Context appContext, @NonNull String version) {
-        SharedPrefsHelper.update(appContext, Constants.pythonLibVersion, version);
     }
 
     private void assertInit() {
