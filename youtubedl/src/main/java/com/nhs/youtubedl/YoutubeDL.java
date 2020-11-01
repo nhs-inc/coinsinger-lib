@@ -85,18 +85,20 @@ public class YoutubeDL {
         }
     }
 
-    protected void initPython(Context appContext, File pythonDir) throws YoutubeDLException {
-        String pythonSize = String.valueOf(pythonDir.length());
-        if (!pythonDir.exists() || shouldUpdatePython(appContext, pythonSize)) {
-            FileUtils.deleteQuietly(pythonDir);
-            pythonDir.mkdirs();
+    protected void initPython(Context appContext, File packagesDir) throws YoutubeDLException {
+        if(!pythonPath.exists()) {
+            if (!packagesDir.exists()) {
+                packagesDir.mkdirs();
+            }
+
             try {
-                ZipUtils.unzip(appContext.getResources().openRawResource(R.raw.python3_7_arm), pythonDir);
-                updatePython(appContext, pythonSize);
+                ZipUtils.unzip(appContext.getResources().openRawResource(R.raw.python3_7_arm), packagesDir);
+                updatePython(appContext, pythonPath.getName());
             } catch (Exception e) {
-                FileUtils.deleteQuietly(pythonDir);
+                FileUtils.deleteQuietly(pythonPath);
                 throw new YoutubeDLException("failed to initialize", e);
             }
+            pythonPath.setExecutable(true);
         }
     }
 
