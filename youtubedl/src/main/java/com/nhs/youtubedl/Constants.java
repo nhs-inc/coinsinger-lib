@@ -8,7 +8,7 @@ public interface Constants {
     String packagesRoot = "packages";
 
     String pythonBin = "usr/bin/python";
-    String youtubeDLDirName = "youtube_dl";
+    String youtubeDLName = "youtube-dl";
     String youtubeDLBin = "__main__.py";
-    String youtubeDLFile = "youtube_dl.zip";
+    String youtubeDLZipFile = "youtube_dl.zip";
 }

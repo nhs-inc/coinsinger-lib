@@ -19,7 +19,6 @@ import com.nhs.youtubedl.dto.VideoInfo;
 import com.nhs.youtubedl.enums.UpdateStatus;
 import com.nhs.youtubedl.threads.StreamGobbler;
 import com.nhs.youtubedl.threads.StreamProcessExtractor;
-import com.nhs.youtubedl.utils.SharedPrefsHelper;
 import com.nhs.youtubedl.utils.ZipUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -53,14 +52,14 @@ public class YoutubeDL {
     synchronized public void init(Context appContext) throws YoutubeDLException {
         if (isInitialized) return;
 
-        File baseDir = new File(appContext.getFilesDir(), Constants.baseName);
+        File baseDir = new File(appContext.getNoBackupFilesDir(), Constants.baseName);
         if(!baseDir.exists()) baseDir.mkdir();
 
         File packagesDir = new File(baseDir, Constants.packagesRoot);
         binDir = new File(packagesDir, "usr/bin");
         pythonPath = new File(packagesDir, Constants.pythonBin);
 
-        File youtubeDLDir = new File(baseDir, Constants.youtubeDLDirName);
+        File youtubeDLDir = new File(baseDir, Constants.youtubeDLName);
         youtubeDLPath = new File(youtubeDLDir, Constants.youtubeDLBin);
 
         ENV_LD_LIBRARY_PATH = packagesDir.getAbsolutePath() + "/usr/lib";
@@ -76,7 +75,7 @@ public class YoutubeDL {
         if (!youtubeDLDir.exists()) {
             youtubeDLDir.mkdirs();
             try {
-                ZipUtils.tempUnzip(appContext.getResources().openRawResource(R.raw.youtube_dl), youtubeDLDir);
+                ZipUtils.unzip(appContext.getResources().openRawResource(R.raw.youtube_dl), youtubeDLDir);
             } catch (Exception e) {
                 FileUtils.deleteQuietly(youtubeDLDir);
                 throw new YoutubeDLException("failed to initialize", e);
@@ -206,5 +205,4 @@ public class YoutubeDL {
     public String version(Context appContext) {
         return YoutubeDLUpdater.version(appContext);
     }
-
 }

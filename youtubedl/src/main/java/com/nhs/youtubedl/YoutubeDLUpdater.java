@@ -34,7 +34,7 @@ class YoutubeDLUpdater {
         try {
             youtubeDLDir = getYoutubeDLDir(appContext);
             //purge older version
-            FileUtils.deleteDirectory(youtubeDLDir);
+            FileUtils.deleteQuietly(youtubeDLDir);
             //install newer version
             youtubeDLDir.mkdirs();
             ZipUtils.unzip(file, youtubeDLDir);
@@ -75,7 +75,7 @@ class YoutubeDLUpdater {
         ArrayNode assets = (ArrayNode) json.get("assets");
         String downloadUrl = "";
         for (JsonNode asset : assets) {
-            if (Constants.youtubeDLFile.equals(asset.get("name").asText())) {
+            if (Constants.youtubeDLZipFile.equals(asset.get("name").asText())) {
                 downloadUrl = asset.get("browser_download_url").asText();
                 break;
             }
@@ -87,7 +87,7 @@ class YoutubeDLUpdater {
     @NonNull
     private static File download(Context appContext, String url) throws IOException {
         URL downloadUrl = new URL(url);
-        File file = File.createTempFile(Constants.youtubeDLFile.replace(".zip", ""), "zip", appContext.getCacheDir());
+        File file = File.createTempFile(Constants.youtubeDLZipFile.replace(".zip", ""), "zip", appContext.getCacheDir());
         FileUtils.copyURLToFile(downloadUrl, file, 5000, 10000);
         return file;
     }
@@ -95,7 +95,7 @@ class YoutubeDLUpdater {
     @NonNull
     private static File getYoutubeDLDir(Context appContext) {
         File baseDir = new File(appContext.getNoBackupFilesDir(), Constants.baseName);
-        return new File(baseDir, Constants.youtubeDLDirName);
+        return new File(baseDir, Constants.youtubeDLName);
     }
 
     @Nullable
