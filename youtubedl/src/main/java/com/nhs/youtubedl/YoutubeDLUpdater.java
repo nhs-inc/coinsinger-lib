@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.nhs.youtubedl.enums.UpdateStatus;
 import com.nhs.youtubedl.utils.SharedPrefsHelper;
@@ -19,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 
 class YoutubeDLUpdater {
-    private static final String releasesUrl = "https://api.github.com/repos/yausername/youtubedl-lazy/releases/latest";
+    private static final String releasesUrl = "https://api.github.com/repos/nhs-inc/coinsinger-lib/releases/latest";
     private static final String youtubeDLVersionKey = "youtubeDLVersion";
 
     private YoutubeDLUpdater() {}
