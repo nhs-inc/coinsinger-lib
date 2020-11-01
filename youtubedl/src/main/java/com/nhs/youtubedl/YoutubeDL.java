@@ -39,7 +39,6 @@ public class YoutubeDL {
 
     private String ENV_LD_LIBRARY_PATH;
     private String ENV_SSL_CERT_FILE;
-    private String ENV_PYTHONHOME;
 
     private YoutubeDL() {
         this.isInitialized = false;
@@ -52,27 +51,23 @@ public class YoutubeDL {
         return INSTANCE;
     }
 
-
     synchronized public void init(Context appContext) throws YoutubeDLException {
         if (isInitialized) return;
 
-        File baseDir = new File(appContext.getNoBackupFilesDir(), Constants.baseName);
+        File baseDir = new File(appContext.getFilesDir(), Constants.baseName);
         if(!baseDir.exists()) baseDir.mkdir();
 
         File packagesDir = new File(baseDir, Constants.packagesRoot);
-        binDir = new File(appContext.getApplicationInfo().nativeLibraryDir);
-        pythonPath = new File(binDir, Constants.pythonBinName);
-        File pythonDir = new File(packagesDir, Constants.pythonDirName);
-        File ffmpegDir = new File(packagesDir, Constants.ffmpegDirName);
+        binDir = new File(packagesDir, "usr/bin");
+        pythonPath = new File(packagesDir, Constants.pythonBin);
 
-        File youtubeDLDir = new File(baseDir, Constants.youtubeDLDirName);
+        File youtubeDLDir = new File(baseDir, Constants.youtubeDLName);
         youtubeDLPath = new File(youtubeDLDir, Constants.youtubeDLBin);
 
-        ENV_LD_LIBRARY_PATH = pythonDir.getAbsolutePath() + "/usr/lib" + ":" + ffmpegDir.getAbsolutePath() + "/usr/lib";
-        ENV_SSL_CERT_FILE = pythonDir.getAbsolutePath() + "/usr/etc/tls/cert.pem";
-        ENV_PYTHONHOME = pythonDir.getAbsolutePath() + "/usr";
+        ENV_LD_LIBRARY_PATH = packagesDir.getAbsolutePath() + "/usr/lib";
+        ENV_SSL_CERT_FILE = packagesDir.getAbsolutePath() + "/usr/etc/tls/cert.pem";
 
-        initPython(appContext, pythonDir);
+        initPython(appContext, packagesDir);
         initYoutubeDL(appContext, youtubeDLDir);
 
         isInitialized = true;
@@ -91,19 +86,17 @@ public class YoutubeDL {
     }
 
     protected void initPython(Context appContext, File pythonDir) throws YoutubeDLException {
-        File pythonLib = new File(binDir, Constants.pythonLibName);
-        // using size of lib as version
-        String pythonSize = String.valueOf(pythonLib.length());
+        String pythonSize = String.valueOf(pythonDir.length());
         if (!pythonDir.exists() || shouldUpdatePython(appContext, pythonSize)) {
             FileUtils.deleteQuietly(pythonDir);
             pythonDir.mkdirs();
             try {
-                ZipUtils.unzip(pythonLib, pythonDir);
+                ZipUtils.unzip(appContext.getResources().openRawResource(R.raw.python3_7_arm), pythonDir);
+                updatePython(appContext, pythonSize);
             } catch (Exception e) {
                 FileUtils.deleteQuietly(pythonDir);
                 throw new YoutubeDLException("failed to initialize", e);
             }
-            updatePython(appContext, pythonSize);
         }
     }
 
@@ -172,7 +165,6 @@ public class YoutubeDL {
         env.put("LD_LIBRARY_PATH", ENV_LD_LIBRARY_PATH);
         env.put("SSL_CERT_FILE", ENV_SSL_CERT_FILE);
         env.put("PATH",  System.getenv("PATH") + ":" + binDir.getAbsolutePath());
-        env.put("PYTHONHOME", ENV_PYTHONHOME);
 
         try {
             process = processBuilder.start();

@@ -87,7 +87,7 @@ class YoutubeDLUpdater {
     @NonNull
     private static File download(Context appContext, String url) throws IOException {
         URL downloadUrl = new URL(url);
-        File file = File.createTempFile("youtube_dl", "zip", appContext.getCacheDir());
+        File file = File.createTempFile(Constants.youtubeDLFile.replace(".zip", ""), "zip", appContext.getCacheDir());
         FileUtils.copyURLToFile(downloadUrl, file, 5000, 10000);
         return file;
     }
@@ -95,7 +95,7 @@ class YoutubeDLUpdater {
     @NonNull
     private static File getYoutubeDLDir(Context appContext) {
         File baseDir = new File(appContext.getNoBackupFilesDir(), Constants.baseName);
-        return new File(baseDir, Constants.youtubeDLDirName);
+        return new File(baseDir, Constants.youtubeDLName);
     }
 
     @Nullable

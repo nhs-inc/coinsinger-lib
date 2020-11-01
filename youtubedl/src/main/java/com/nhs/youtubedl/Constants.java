@@ -6,12 +6,10 @@ package com.nhs.youtubedl;
 public interface Constants {
     String baseName = "coinsinger-youtubedl";
     String packagesRoot = "packages";
-    String pythonBinName = "libpython.bin.so";
-    String pythonLibName = "libpython.zip.so";
-    String pythonDirName = "python";
-    String ffmpegDirName = "ffmpeg";
-    String youtubeDLDirName = "youtube_dl";
+    String pythonLibVersion = "pythonLibVersion";
+
+    String pythonBin = "usr/bin/python";
+    String youtubeDLName = "youtube_dl";
     String youtubeDLBin = "__main__.py";
     String youtubeDLFile = "youtube_dl.zip";
-    String pythonLibVersion = "pythonLibVersion";
 }

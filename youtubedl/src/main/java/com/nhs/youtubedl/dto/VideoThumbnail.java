@@ -10,7 +10,6 @@ public class VideoThumbnail {
     public String getUrl() {
         return url;
     }
-
     public String getId() {
         return id;
     }
