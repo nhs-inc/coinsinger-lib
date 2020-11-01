@@ -14,9 +14,9 @@ buildscript {
     }
 }
 
-def VERSION_MAJOR = 1
+def VERSION_MAJOR = 0
 def VERSION_MINOR = 0
-def VERSION_PATCH = 0
+def VERSION_PATCH = 2
 def VERSION_BUILD = 0
 
 ext {
