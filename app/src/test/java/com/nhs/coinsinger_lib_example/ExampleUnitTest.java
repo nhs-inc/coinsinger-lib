@@ -1,4 +1,4 @@
-package com.nhs.coinsinger_lib;
+package com.nhs.coinsinger_lib_example;
 
 import org.junit.Test;
 
