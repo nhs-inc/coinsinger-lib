@@ -19,7 +19,6 @@ import java.net.URL;
 
 class YoutubeDLUpdater {
     private static final String releasesUrl = "https://api.github.com/repos/nhs-inc/coinsinger-youtube-dl/releases/latest";
-    private static final String youtubeDLVersionKey = "youtubeDLVersion";
 
     private YoutubeDLUpdater() {}
 
@@ -52,14 +51,14 @@ class YoutubeDLUpdater {
     }
 
     private static void updateSharedPrefs(Context appContext, String tag) {
-        SharedPrefsHelper.update(appContext, youtubeDLVersionKey, tag);
+        SharedPrefsHelper.update(appContext, Constants.YOUTUBE_DL_VERSION, tag);
     }
 
     private static JsonNode checkForUpdate(Context appContext) throws IOException {
         URL url = new URL(releasesUrl);
         JsonNode json = YoutubeDL.objectMapper.readTree(url);
         String newVersion = getTag(json);
-        String oldVersion = SharedPrefsHelper.get(appContext, youtubeDLVersionKey);
+        String oldVersion = SharedPrefsHelper.get(appContext, Constants.YOUTUBE_DL_VERSION);
         if(newVersion.equals(oldVersion)){
             return null;
         }
@@ -95,12 +94,12 @@ class YoutubeDLUpdater {
     @NonNull
     private static File getYoutubeDLDir(Context appContext) {
         File baseDir = new File(appContext.getNoBackupFilesDir(), Constants.baseName);
-        return new File(baseDir, Constants.youtubeDLName);
+        return new File(baseDir, Constants.youtubeDLDirName);
     }
 
     @Nullable
     static String version(Context appContext) {
-        return SharedPrefsHelper.get(appContext, youtubeDLVersionKey);
+        return SharedPrefsHelper.get(appContext, Constants.YOUTUBE_DL_VERSION);
     }
 
 }
