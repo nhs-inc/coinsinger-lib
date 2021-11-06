@@ -79,7 +79,7 @@ public class YoutubeDL {
         if (!youtubeDLDir.exists()) {
             youtubeDLDir.mkdirs();
             try {
-                ZipUtils.unzip(appContext.getResources().openRawResource(R.raw.youtube_dl), youtubeDLDir);
+                ZipUtils.unzip(appContext.getResources().openRawResource(R.raw.yt_dlp), youtubeDLDir);
             } catch (Exception e) {
                 FileUtils.deleteQuietly(youtubeDLDir);
                 throw new YoutubeDLException("failed to initialize", e);
@@ -124,6 +124,7 @@ public class YoutubeDL {
     @NonNull
     public VideoInfo getInfo(YoutubeDLRequest request) throws YoutubeDLException, InterruptedException {
         request.addOption("--dump-json");
+        request.addOption("--no-check-certificates");
         YoutubeDLResponse response = execute(request, null);
 
         VideoInfo videoInfo;
